@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teste1/services/auth.dart';
+import 'package:flutter/rendering.dart';
+
 
 class Register extends StatefulWidget {
 
@@ -122,12 +124,12 @@ class _RegisterState extends State<Register> {
                 height: 40,
                 child: FlatButton(
 
-                  color: Colors.pink[400],
+                  color: Colors.white,
 
                   child: Text(
 
                     'Register',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: TextStyle(color: Colors.black, fontSize: 20),
 
 
                   ),
@@ -142,6 +144,22 @@ class _RegisterState extends State<Register> {
                     }
                   },
 
+                ),
+              ),
+              SizedBox(height: 20,),
+              SizedBox(
+                width: 200,
+                height: 40,
+                child: ElevatedButton.icon(
+                  label: Text('Sign Up with Google'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    onPrimary: Colors.black,
+                  ),
+
+                  icon: Icon(Icons.email),
+
+                  onPressed: () {},
                 ),
               ),
 
