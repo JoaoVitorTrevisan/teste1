@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:teste1/services/auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignIn extends StatefulWidget {
 
@@ -12,10 +14,56 @@ class SignIn extends StatefulWidget {
   State<SignIn> createState() => _SignInState();
 }
 
+class Authentication {
+  static Future<User?> signInWithGoogle({required BuildContext context}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
+    final GoogleSignInAccount? googleSignInAccount =
+    await googleSignIn.signIn();
+
+    if (googleSignInAccount != null) {
+      final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      try {
+        final UserCredential userCredential =
+        await auth.signInWithCredential(credential);
+
+        user = userCredential.user;
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'account-exists-with-different-credential') {
+          // handle the error here
+        }
+        else if (e.code == 'invalid-credential') {
+          // handle the error here
+        }
+      } catch (e) {
+        // handle the error here
+      }
+    }
+
+    return user;
+  }
+}
+
 class _SignInState extends State<SignIn> {
 
   final AuthService _auth = AuthService();
   final _formkey = GlobalKey<FormState>();
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  String? name;
+  String? imageUrl;
+
+
 
   //text fields
   String email = '';
@@ -24,6 +72,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent[100],
       appBar: AppBar(
@@ -119,10 +168,10 @@ class _SignInState extends State<SignIn> {
                 height: 40,
                 child: FlatButton(
 
-                  color: Colors.pink[400],
+                  color: Colors.white,
                   child: Text(
                     'Sign In',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: TextStyle(color: Colors.black, fontSize: 20),
 
                   ),
                   onPressed: () async {
@@ -139,6 +188,25 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
 
+              SizedBox(height: 20,),
+              SizedBox(
+                width: 200,
+                height: 40,
+                child: ElevatedButton.icon(
+                  label: Text('Sign In with Google'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    onPrimary: Colors.black,
+                  ),
+
+                  icon: Icon(Icons.email),
+
+                  onPressed: () async {
+                    GoogleSignIn().signIn();
+                  },
+                ),
+              ),
+
               SizedBox(height: 12,),
               Text(
                 error,
@@ -151,21 +219,6 @@ class _SignInState extends State<SignIn> {
 
         ),
 
-        /*padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
-        child: RaisedButton(
-          child: Text('Sign in anon'),
-          onPressed: () async {
-
-            dynamic result = await _auth.signInAnon();
-            if(result == null){
-              print('error signing in');
-            }else{
-              print('signed in');
-              print(result.email);
-            }
-
-          },
-        ),*/
       ),
     );
   }

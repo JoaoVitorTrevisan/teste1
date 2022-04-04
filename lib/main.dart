@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teste1/models/myuser.dart';
 import 'package:teste1/screens/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,20 +20,35 @@ void main() async {
 }
 
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+
+
   @override
   Widget build(BuildContext context) {
+
+    GoogleSignInAccount? user = _googleSignIn.currentUser;
+
     return  StreamProvider<MyUser?>.value(
+
       catchError: (_,__) {},
         initialData: null,
         value: AuthService().user,
         child: MaterialApp(
           home: const Wrapper(
+
           ),
         ),
+
     );
   }
 }
