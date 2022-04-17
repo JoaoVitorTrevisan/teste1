@@ -7,12 +7,15 @@ class Home extends StatelessWidget {
 
   Home({Key? key}) : super(key: key);
 
+  //Criar Lista de Objetos
   final List<Map> myProducts =
   List.generate(20, (index) => {"id": index, "name": "Product $index"})
       .toList();
 
   @override
   Widget build(BuildContext context) {
+
+    //AppBar
     return Scaffold(
       backgroundColor: Colors.brown[50],
       appBar: AppBar(
@@ -29,13 +32,17 @@ class Home extends StatelessWidget {
           )
         ],
       ),
+
+      //Começo do Body
       body: Padding(
 
         padding: const EdgeInsets.all(20.0),
+
+        //Campo de GridView
         child: GridView.builder(
 
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 200,
+                maxCrossAxisExtent: 600,
                 childAspectRatio: 4 / 3 ,
                 crossAxisSpacing: 40,
                 mainAxisSpacing: 40),

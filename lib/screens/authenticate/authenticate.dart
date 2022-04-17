@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:teste1/screens/authenticate/resgister.dart';
 import 'package:teste1/screens/authenticate/sign_in.dart';
 
+//Verifica se o usuário autenticou a conta com o Firebase
+
 class Authenticate extends StatefulWidget {
   const Authenticate({Key? key}) : super(key: key);
 

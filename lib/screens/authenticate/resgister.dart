@@ -15,15 +15,18 @@ class Register extends StatefulWidget {
 }
 
 
+
 class _RegisterState extends State<Register> {
 
   final AuthService _auth = AuthService();
   final _formkey = GlobalKey<FormState>();
 
-  //text fields
+  //Campos de Texto
   String email = '';
   String password = '';
   String error = '';
+
+  //AppBar
 
   @override
   Widget build(BuildContext context) {
@@ -44,17 +47,23 @@ class _RegisterState extends State<Register> {
           )
         ],
       ),
+
+      //Começo do Body
+
       body: Container(
 
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
 
         decoration: BoxDecoration(
+
           image: DecorationImage(
+
             opacity: 0.7,
             image: AssetImage("background2.png"),
             fit: BoxFit.cover,
           ),
         ),
+
         child: Form(
           key: _formkey,
 
@@ -63,6 +72,8 @@ class _RegisterState extends State<Register> {
             children: <Widget> [
 
               SizedBox(height: 20,),
+
+              //Campo de E-mail
               TextFormField(
 
                   style: const TextStyle(
@@ -91,6 +102,8 @@ class _RegisterState extends State<Register> {
               ),
 
               SizedBox(height: 20,),
+
+              //Campo de Senha
               TextFormField(
                   obscureText: true,
 
@@ -119,25 +132,25 @@ class _RegisterState extends State<Register> {
               ),
 
               SizedBox(height: 20,),
+
+              //Botão Cadastrar
               SizedBox(
                 width: 200,
                 height: 40,
                 child: FlatButton(
-
                   color: Colors.white,
 
                   child: Text(
-
-                    'Register',
+                    'Cadastrar',
                     style: TextStyle(color: Colors.black, fontSize: 20),
-
-
                   ),
+
+                  //Verifica se o e-mail é válido
                   onPressed: () async {
                     if(_formkey.currentState!.validate()){
                       dynamic result = await _auth.registerWithFirebase(email, password);
                       if(result == null){
-                        setState(() => error = 'please input an valid email');
+                        setState(() => error = 'Email inválido');
 
                       }
 
@@ -146,6 +159,8 @@ class _RegisterState extends State<Register> {
 
                 ),
               ),
+
+              //Tentativa de fazer funcionar o Botão do Google
               SizedBox(height: 20,),
               SizedBox(
                 width: 200,
